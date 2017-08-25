@@ -1,0 +1,95 @@
+###################################################### -*- mode: r -*- #####
+## Scenario setup for Iterated Race (iRace).
+############################################################################
+
+## To use the default value of a parameter of iRace, simply do not set
+## the parameter (comment it out in this file, and do not give any
+## value on the command line).
+
+## Directory where the programs will be run.
+execDir = "./"
+
+## Directory where tuning instances are located, either absolute path or
+## relative to current directory.
+trainInstancesDir = "./instances"
+
+## Indicates the number of decimal places to be considered for the
+## real parameters.
+digits = 6
+
+## The script called for each configuration that launches the program to be
+## tuned.  See templates/target-runner.tmpl
+targetRunner = "./.target-runner.sh"
+
+## The maximum number of runs (invocations of targetRunner) that will
+## performed. It determines the (maximum) budget of experiments for the tuning.
+maxExperiments = 1000
+
+## Enable/disable deterministic algorithm mode, if enabled irace
+## will not use an instance more that once in each race. Note that
+## if the number of instances provided is less than firstTest, no
+## statistical test will be performed.
+deterministic = 1
+
+## Number of calls to targetRunner to execute in parallel. Less than 2
+## means calls to targetRunner are sequentially executed.
+parallel = 4
+
+
+## -------------------------------TODO------------------------------------------ 
+
+## A file containing a list of initial configurations.
+## If empty or NULL, do not use a file.
+# configurationsFile = ""
+
+## The maximum time in seconds for the runs of targetRunner that will be
+## performed. The mean execution time is estimated to calculate the maximum
+## number of experiments. When this is used targetRunner must return the
+## execution time as second output.
+# maxTime = 0
+
+## The percentage of the budget used for estimating the mean execution time.
+## Only used when maxTime > 0.
+# budgetEstimation = 0.02
+
+## Sample the instances or take them always in the same order.
+# sampleInstances = 1
+
+## Specifies the statistical test type: F-test or t-test.
+# testType = "F-test"
+
+## Specifies how many instances are seen before the first elimination
+## test. It must be a multiple of eachTest.
+# firstTest = 5
+
+## Specifies how many instances are seen between elimination tests.
+# eachTest = 1
+
+## Enable/disable MPI. Use MPI to execute targetRunner in parallel
+## (parameter parallel is the number of slaves).
+# mpi = 0
+
+## Enable/disable the soft restart strategy that avoids premature convergence
+## of the probabilistic model.
+# softRestart = 1
+
+## Confidence level for the elimination test.
+# confidence = 0.95
+
+## File containing a list of logical expressions that cannot be true
+## for any evaluated configuration. If empty or NULL, do not use a file.
+# forbiddenFile = ""
+
+## Enable/disable elitist irace.
+# elitist = 1
+
+## Number of instances to add to execution list before previous instances in
+## elitist irace.
+# elitistNewInstances  = 1
+
+## Limit for the elitist race, number of statistical test performed without
+## elimination of configurations.
+# elitistLimit  = 2
+
+## END of scenario file
+############################################################################
