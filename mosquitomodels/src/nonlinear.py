@@ -108,3 +108,6 @@ if __name__ == '__main__':
         model.fit(xs, ts)
         ts_pred = model.predict(xs)
         save_data(results_filename, weeks, ts, ts_pred)
+
+        results_plot_filename = predict + '/prediction-' + modelname + '.eps'
+        save_data(results_filename, weeks, ts, ts_pred)

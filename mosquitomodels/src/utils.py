@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.model_selection import TimeSeriesSplit
 from sklearn.model_selection import cross_val_score
@@ -43,11 +44,9 @@ def load_data(filename='data/all_data.csv'):
     n_rows, n_cols = data.shape
     assert n_cols > 3
 
-    ts = data[:, 0]
-    xs = data[:, 1:]
-    weeks = np.arange(0, n_cols)
-
-    ts = smoothing(ts)
+    weeks = data[:, 0]
+    ts = smoothing(data[:, 1])
+    xs = data[:, 2:]
 
     return n_cols, weeks, ts, xs
 
@@ -71,3 +70,18 @@ def print_stats(scores, mean, std_dev, title='Stats'):
     print('Model Scores: ', scores)
     print('Mean Score: ', mean)
     print('Standard Deviation of Score: ', std_dev)
+
+
+def save_plot(filename, weeks, y_true, y_pred, xlabel='Weeks',
+              ylabel='Normalized abundance', label_true='Ground truth',
+              label_pred='Model', dpi=300):
+
+    plt.plot(weeks, y_true, color='c', linestyle='dashed', label=label_true)
+    plt.plot(weeks, y_pred, color='g', linestyle='solid', label=label_pred)
+
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+
+    plt.legend()
+
+    plt.savefig(filename, format='eps', dpi=300)
