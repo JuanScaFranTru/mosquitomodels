@@ -26,6 +26,6 @@
 ##    condition is satisfied, FALSE otherwise.
 
 # 1:             2:              3:             4:               5:
-model            "--model"             c              (knnr)
+model            "--model"        c              (knnr)
 weights          "--weights"       c              (uniform, distance)
 n_neighbors      "--n_neighbors"   i              (1, 150)
