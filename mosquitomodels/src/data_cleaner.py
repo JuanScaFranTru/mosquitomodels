@@ -79,7 +79,6 @@ if __name__ == '__main__':
 
     infilename = opts['-i']
     outfilename = opts['-o']
-    split = int(opts['-s'])
 
     df = read_csv(infilename, sep=',', usecols=usecols)
     df = df.dropna()
@@ -89,11 +88,13 @@ if __name__ == '__main__':
     result['semana'] = np.arange(0, df.shape[0])
     result['abundancia_norm'] = df['abundancia_norm']
 
-    if split is None:
+    if opts['-s'] is None:
         result.to_csv(outfilename, sep=',', index=False)
         result = read_csv(outfilename, sep=',')  # Debug
         print(result)  # Debug
     else:
+        split = int(opts['-s'])
+
         results = splitter(result, split)
 
         for i, r in enumerate(results):
