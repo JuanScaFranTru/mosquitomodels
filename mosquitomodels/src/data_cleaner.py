@@ -90,8 +90,6 @@ if __name__ == '__main__':
 
     if opts['-s'] is None:
         result.to_csv(outfilename, sep=',', index=False)
-        result = read_csv(outfilename, sep=',')  # Debug
-        print(result)  # Debug
     else:
         split = int(opts['-s'])
 
