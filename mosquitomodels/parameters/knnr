@@ -28,4 +28,4 @@
 # 1:             2:              3:             4:               5:
 model            "--model "        c              (knnr)
 weights          "--weights "       c              (uniform, distance)
-n_neighbors      "--n_neighbors "   i              (1, 150)
+n_neighbors      "--n_neighbors "   i              (1, 10)
