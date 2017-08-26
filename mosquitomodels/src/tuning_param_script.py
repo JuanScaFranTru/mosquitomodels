@@ -1,15 +1,15 @@
 """Train a model
 
 Usage:
-
-  ./tuning_param_script.py --model <s> --splitter <s> --min_samples_split <n> --max_depth <n> --min_samples_leaf <n>
-  ./tuning_param_script.py --model <s> --weights <s> --n_neighbors <n>
-  ./tuning_param_script.py --model <s> --alpha <n> --neurons <n> --layers <n>
-  ./tuning_param_script.py --model <s> --C <n> --epsilon <n> --gamma <n> --max_iter <n>
-  ./script.py -h | --help
+  ./tuning_param_script.py -i <s> --model <s> --splitter <s> --min_samples_split <n> --max_depth <n> --min_samples_leaf <n>
+  ./tuning_param_script.py -i <s> --model <s> --weights <s> --n_neighbors <n>
+  ./tuning_param_script.py -i <s> --model <s> --alpha <n> --neurons <n> --layers <n>
+  ./tuning_param_script.py -i <s> --model <s> --C <n> --epsilon <n> --gamma <n> --max_iter <n>
+  ./tuning_param_script.py -h | --help
 
 Options:
-  --model <s>            Model to be selected
+  -i <s>                   Input file
+  --model <s>              Model to be selected
 
   --splitter <s>           dtr parameter
   --min_samples_split <n>  dtr parameter
@@ -23,10 +23,10 @@ Options:
   --neurons <n>            mlpr parameter
   --layers <n>             mlpr parameter
 
-  --C                      svr parameter
-  --epsilon                svr parameter
-  --gamma                  svr parameter
-  --max_iter               svr parameter
+  --C <n>                  svr parameter
+  --epsilon <n>            svr parameter
+  --gamma <n>              svr parameter
+  --max_iter <n>           svr parameter
 
   --help                   show this screen
 """
@@ -38,9 +38,9 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 
 
-def is_number(s):
+def can_cast(s, caster=int):
     try:
-        float(s)
+        caster(s)
         return True
     except ValueError:
         return False
@@ -60,11 +60,14 @@ def parse_docopt(doc):
     copy = opts.copy()
     for k, v in copy.items():
         del opts[k]
-        k = k[2:]
-        opts[k] = v
+        if v is not None:
+            k = k[2:]
+            opts[k] = v
 
-    for k, v in opts:
-        if is_number(v):
+    for k, v in opts.items():
+        if can_cast(v, int):
+            opts[k] = int(v)
+        elif can_cast(v, float):
             opts[k] = float(v)
 
     return filename, modelname, opts
@@ -78,16 +81,17 @@ def MLPRegressorProxy(alpha=0.0001, neurons=1, layers=2):
 
 
 models = {
+    'dtr': DecisionTreeRegressor,
+    'knnr': KNeighborsRegressor,
     'mlpr': MLPRegressorProxy,
     'svr': SVR,
-    'knnr': KNeighborsRegressor,
-    'dtr': DecisionTreeRegressor
 }
 
 
 if __name__ == '__main__':
     filename, modelname, opts = parse_docopt(__doc__)
 
+    print(opts)
     _, _, ts, xs = load_data(filename=filename)
 
     model = models[modelname]
