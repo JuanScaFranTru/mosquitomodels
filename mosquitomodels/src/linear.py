@@ -1,19 +1,20 @@
 """Train a model
 
 Usage:
-  ./linear.py -i <file> -m <model> [--n_comp <n>]
+  ./linear.py -i <file> --model <model> [--n_comp <n>] --predict <file>
   ./linear.py -h | --help
 
 Options:
-  -i <file>             Input file
-  -m <model>             Model to be selected
+  -i <file>                Input file
+  --predict <file>         Predict and save results in the given directory
+  --model <model>          Model to be selected
 
   --n_comp <n>             PCA_model parameter
 
   --help                   show this screen
 """
 from docopt import docopt
-from utils import load_data, stats
+from utils import load_data, stats, print_stats, save_data, save_plot
 from sklearn.decomposition import PCA
 from sklearn.linear_model import RidgeCV
 from sklearn.linear_model import LinearRegression
@@ -43,10 +44,12 @@ models = {
 if __name__ == '__main__':
     opts = docopt(__doc__)
     filename = opts['-i']
-    data_len, weeks, ts, xs = load_data(filename=filename)
+    predict = opts['--predict']
 
-    model = models[opts['-m']]
-    linear_model = model()
+    modelname = opts['-m']
+    linear_model = models[modelname]()
+
+    data_len, weeks, ts, xs = load_data(filename=filename)
 
     # Models uses PCA?
     if opts['--n_comp'] is not None:
@@ -54,7 +57,16 @@ if __name__ == '__main__':
         pca = PCA(n_components=n_components)
         xs = pca.fit(xs).transform(xs)
 
-    linear_model.fit(xs, ts)
+    scores, mean, std_dev = stats(xs, ts, linear_model)
+    if predict is None:
+        print(mean)
+    else:
+        print_stats(scores, mean, std_dev)
 
-    scores, mean, std = stats(xs, ts, linear_model)
-    prediction = linear_model.predict(xs)
+        results_filename = predict + '/prediction-' + modelname + '.csv'
+        linear_model.fit(xs, ts)
+        ts_pred = linear_model.predict(xs)
+        save_data(results_filename, weeks, ts, ts_pred)
+
+        results_plot_filename = predict + '/prediction-' + modelname + '.eps'
+        save_plot(results_filename, weeks, ts, ts_pred)
