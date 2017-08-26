@@ -32,7 +32,7 @@ Options:
   --help                   show this screen
 """
 from docopt import docopt
-from utils import load_data, stats, print_stats, save_data
+from utils import load_data, stats, print_stats, save_data, save_plot
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 from sklearn.neighbors import KNeighborsRegressor
@@ -105,9 +105,9 @@ if __name__ == '__main__':
         print_stats(scores, mean, std_dev)
 
         results_filename = predict + '/prediction-' + modelname + '.csv'
+        results_plot_filename = predict + '/prediction-' + modelname + '.eps'
+
         model.fit(xs, ts)
         ts_pred = model.predict(xs)
         save_data(results_filename, weeks, ts, ts_pred)
-
-        results_plot_filename = predict + '/prediction-' + modelname + '.eps'
-        save_data(results_filename, weeks, ts, ts_pred)
+        save_plot(results_plot_filename, weeks, ts, ts_pred)

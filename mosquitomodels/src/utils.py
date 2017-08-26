@@ -84,4 +84,4 @@ def save_plot(filename, weeks, y_true, y_pred, xlabel='Weeks',
 
     plt.legend()
 
-    plt.savefig(filename, format='eps', dpi=300)
+    plt.savefig(filename, format='eps', dpi=dpi)
