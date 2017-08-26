@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.model_selection import TimeSeriesSplit
 from sklearn.model_selection import cross_val_score
@@ -29,34 +28,28 @@ def smoothing(xs):
     return xs
 
 
-def load_data(cols=None, filename='data/all_data.csv', split=None):
-    """Load the training data set.
-    Preconditions: 0 <= split <= 1
+def save_data(filename, weeks, y_true, y_pred):
+    """Save the predictions to a csv."""
+    assert len(weeks) == len(y_true)
+    assert len(y_pred) == len(y_true)
+    X = np.transpose(np.array([weeks, y_true, y_pred]))
+    np.savetxt(filename, X, delimiter=',')
 
-    split -- percentage of dataset (e.g. 0.9). If None, no splitting is done.
-    """
 
-    assert split is None or 0 <= split <= 1
+def load_data(filename='data/all_data.csv'):
+    """Load the training data set."""
 
-    if cols is None:
-        cols = tuple(range(2, 34))
+    data = np.loadtxt(filename, delimiter=',', skiprows=1)
+    n_rows, n_cols = data.shape
+    assert n_cols > 3
 
-    weeks = np.loadtxt(filename, delimiter=',', usecols=0, dtype=float)
-    ts = np.loadtxt(filename, delimiter=',', usecols=1, dtype=float)
-    xs = np.loadtxt(filename, delimiter=',', usecols=cols, dtype=float)
-    data_len = len(weeks)
+    ts = data[:, 0]
+    xs = data[:, 1:]
+    weeks = np.arange(0, n_cols)
 
     ts = smoothing(ts)
 
-    if split is None:
-        return data_len, weeks, ts, xs
-    else:
-        # Reserve split * 100% of the data for validation
-        split_point = int(data_len * split)
-        ts, vts = ts[0:split_point], ts[split_point:data_len]
-        xs, vxs = xs[0:split_point, :], xs[split_point:data_len, :]
-        weeks, vweeks = weeks[0:split_point], weeks[split_point:data_len]
-        return data_len, weeks, ts, xs, vweeks, vts, vxs
+    return n_cols, weeks, ts, xs
 
 
 def stats(xs, ts, model, n_splits=5):
@@ -70,9 +63,7 @@ def stats(xs, ts, model, n_splits=5):
     return scores, mean, std_dev
 
 
-def print_stats(xs, ts, model, title='Stats', n_splits=5):
-    scores, mean, std_dev = stats(xs, ts, model, n_splits)
-
+def print_stats(scores, mean, std_dev, title='Stats'):
     print()
     print(title)
     print('-' * len(title))
@@ -80,17 +71,3 @@ def print_stats(xs, ts, model, title='Stats', n_splits=5):
     print('Model Scores: ', scores)
     print('Mean Score: ', mean)
     print('Standard Deviation of Score: ', std_dev)
-
-
-def plot_prediction(weeks, xs, ts, model):
-    ys_pred = model.predict(xs)
-    plt.plot(weeks, ts)
-    plt.plot(weeks, ys_pred)
-    plt.show()
-
-
-def plot(xs, ys):
-    plt.plot(xs, ys)
-
-def show():
-    plt.show()
