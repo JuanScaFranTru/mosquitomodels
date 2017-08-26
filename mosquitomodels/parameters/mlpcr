@@ -26,7 +26,7 @@
 ##    condition is satisfied, FALSE otherwise.
 
 # 1:             2:              3:             4:               5:
-model            "-m"            c              (mlpcr)
-alpha            "-alpha"        r              (1e-09, 1)
-neurons          "-neurons"      i              (10, 250)
-layers           "-layers"       h              (10, 250)
+model            "--model"            c              (mlpcr)
+alpha            "--alpha"        r              (1e-09, 1)
+neurons          "--neurons"      i              (10, 250)
+layers           "--layers"       h              (10, 250)
