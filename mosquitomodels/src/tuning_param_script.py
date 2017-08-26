@@ -2,10 +2,10 @@
 
 Usage:
 
-  ./script.py --model <s> --splitter <s> --min_samples_split <n> --max_depth <n> --min_samples_leaf <n>
-  ./script.py --model <s> --weights <s> --n_neighbors <n>
-  ./script.py --model <s> --alpha <n> --neurons <n> --layers <n>
-  ./script.py --model <s> --C <n> --epsilon <n> --gamma <n> --max_iter <n>
+  ./tuning_param_script.py --model <s> --splitter <s> --min_samples_split <n> --max_depth <n> --min_samples_leaf <n>
+  ./tuning_param_script.py --model <s> --weights <s> --n_neighbors <n>
+  ./tuning_param_script.py --model <s> --alpha <n> --neurons <n> --layers <n>
+  ./tuning_param_script.py --model <s> --C <n> --epsilon <n> --gamma <n> --max_iter <n>
   ./script.py -h | --help
 
 Options:
