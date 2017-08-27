@@ -14,7 +14,7 @@ function run {
     irace -s ./.scenario -p parameters/$model -l results/$model.Rdata;
 
     # Output results in a csv
-    program='library("irace"); load("results/'$model'.Rdata"); a = getFinalElites(iraceResults, n = 0); a$.ID. = NULL; a$model = NULL; a$.PARENT. = NULL; write.csv(a, file = "results/'$model'.csv"); q();'
+    program='library("irace"); load("results/'$model'.Rdata"); a = getFinalElites(iraceResults, n = 0); a$.ID. = NULL; a$model = NULL; a$.PARENT. = NULL; write.csv(a, file = "results/'$model'.csv", row.names=F); q();'
 
     echo $program | R --no-save > /dev/null;
 }
