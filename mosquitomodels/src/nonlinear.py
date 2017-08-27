@@ -2,7 +2,7 @@
 
 Usage:
   ./tuning_param_script.py -i <s> --model <s> --splitter <s> --min_samples_split <n> --max_depth <n> --min_samples_leaf <n> [--predict <s>]
-  ./tuning_param_script.py -i <s> --model <s> --weights <s> --n_neighbors <n> [--predict <s>]
+  ./tuning_param_script.py -i <s> --model <s> --weights <s> --n_neighbors <n> --algorithm <s> --leaf_size <n> [--predict <s>]
   ./tuning_param_script.py -i <s> --model <s> --alpha <n> --neurons <n> --layers <n> [--predict <s>]
   ./tuning_param_script.py -i <s> --model <s> --C <n> --epsilon <n> --gamma <n> --max_iter <n> [--predict <s>]
   ./tuning_param_script.py -h | --help
@@ -19,6 +19,8 @@ Options:
 
   --weights <n>            knnr parameter
   --n_neighbors <n>        knnr parameter
+  --algorithm <s>          knnr parameter
+  --leaf_size <n>          knnr parameter
 
   --alpha <n>              mlpr parameter
   --neurons <n>            mlpr parameter
