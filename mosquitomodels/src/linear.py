@@ -46,7 +46,7 @@ if __name__ == '__main__':
     filename = opts['-i']
     predict = opts['--predict']
 
-    modelname = opts['-m']
+    modelname = opts['--model']
     linear_model = models[modelname]()
 
     data_len, weeks, ts, xs = load_data(filename=filename)
@@ -69,4 +69,4 @@ if __name__ == '__main__':
         save_data(results_filename, weeks, ts, ts_pred)
 
         results_plot_filename = predict + '/prediction-' + modelname + '.eps'
-        save_plot(results_filename, weeks, ts, ts_pred)
+        save_plot(results_plot_filename, weeks, ts, ts_pred)
