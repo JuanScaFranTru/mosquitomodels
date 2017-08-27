@@ -48,8 +48,8 @@ if __name__ == '__main__':
 
     result = df.apply(zscore)
 
-    result['semana'] = np.arange(0, df.shape[0])
-    result['abundancia_norm'] = df['abundancia_norm']
+    result['Week'] = np.arange(0, df.shape[0])
+    result['Normalized abundancy'] = df['Normalized abundancy']
 
     if opts['-s'] is None:
         result.to_csv(outfilename, sep=',', index=False)
