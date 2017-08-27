@@ -48,8 +48,15 @@ If something went wrong while running irace you can run `cat *err | less` and
 
 ## Plotting input data heatmap
 
-Run:
+To plot the raw data:
 
 ```
-python src/plotdata.py raw_data/clorinda.csv raw_data/iguazu.csv raw_data/pampa.csv raw_data/tartagal.csv 
+python --skipcols 3 --nolag src/plotdata.py raw_data/clorinda.csv raw_data/iguazu.csv raw_data/pampa.csv raw_data/tartagal.csv 
+```
+
+To plot the cleaned data with the selected variables:
+
+```
+./clean_data.sh
+python src/plotdata.py --skipcols 1 data/clorinda.csv data/iguazu.csv data/pampa.csv data/tartagal.csv 
 ```
