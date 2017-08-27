@@ -9,22 +9,27 @@ containsElement () {
     return 1
 }
 
-./clean_data.sh;
+function plotlinear {
+    model=$1
+    python src/linear.py  -i data/tartagal.csv --model $m --predict results;
+}
+
+function plotnonlinear {
+    model=$1
+    python src/nonlinear.py -i data/tartagal.csv -p results/$m.csv --model $m --predict results
+}
 
 if containsElement "$1" "${nlmodels[@]}"; then
-    ./tune_params.sh $1;
-    ./plot_results.sh $1;
+    plotnonlinear $1
 elif containsElement "$1" "${lmodels[@]}"; then
-    ./plot_results.sh $1;
+    plotlinear $1
 else
     for m in "${nlmodels[@]}"; do
-        ./tune_params.sh $m;
-        ./plot_results.sh $m;
-        sleep 100;
+        plotnonlinear $1
     done
 
     for m in "${lmodels[@]}"; do
-        ./plot_results.sh $m;
+        plotlinear $1
     done
 fi
 
