@@ -9,14 +9,15 @@ Options:
   --help                   show this screen
 
 Examples:
-  python controller.py clear                     # Delete the all *stderr and *stdout
-  python controller.py clean                     # Clean the data
-  python controller.py tune                      # Use the cleaned data to tune all models
-  python controller.py tune svr                  # Tune svr params using the cleaned data
-  python controller.py tune svr mlpr             # Tune svr and mlpr params using the cleaned data
-  python controller.py plot svr                  # Plot predictions using svr model using the selected parameters
-  python controller.py clean tune plot svr mlpr  # Clean, tune and plot svr and mlpr models
-  python controller.py clean tune plot linear    # Clean and plot linear model (linear cannot be tuned)
+  python controller.py clear                               # Delete the all *stderr and *stdout
+  python controller.py clean                               # Clean the data
+  python controller.py tune                                # Use the cleaned data to tune all models
+  python controller.py tune svr                            # Tune svr params using the cleaned data
+  python controller.py tune svr mlpr                       # Tune svr and mlpr params using the cleaned data
+  python controller.py plot --sp 0.8 svr                   # Plot predictions using svr model using the selected parameters
+  python controller.py plot --sp 0.9 svr                   # Plot predictions using 90% training and 10% test
+  python controller.py clean tune plot --sp 0.8 svr mlpr   # Clean, tune and plot svr and mlpr models
+  python controller.py clean tune plot --sp 0.8 linear     # Clean and plot linear model (linear cannot be tuned)
 """
 from docopt import docopt
 from os import listdir
