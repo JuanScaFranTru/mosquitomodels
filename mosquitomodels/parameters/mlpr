@@ -28,5 +28,5 @@
 # 1:             2:              3:             4:               5:
 model            "--model "      c              (mlpr)
 alpha            "--alpha "      r              (1e-09, 1)
-neurons          "--neurons "    i              (1, 250)
-layers           "--layers "     i              (2, 250)
+neurons          "--neurons "    i              (1, 10)
+layers           "--layers "     i              (2, 10)
