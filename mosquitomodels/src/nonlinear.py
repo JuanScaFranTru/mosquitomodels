@@ -1,14 +1,16 @@
 """Train a model
 
 Usage:
-  ./tuning_param_script.py -i <s> --model <s> --splitter <s> --min_samples_split <n> --max_depth <n> --min_samples_leaf <n> [--predict <s>]
-  ./tuning_param_script.py -i <s> --model <s> --weights <s> --n_neighbors <n> --algorithm <s> --leaf_size <n> [--predict <s>]
-  ./tuning_param_script.py -i <s> --model <s> --alpha <n> --neurons <n> --layers <n> [--predict <s>]
-  ./tuning_param_script.py -i <s> --model <s> --C <n> --epsilon <n> --gamma <n> --max_iter <n> [--predict <s>]
+  ./tuning_param_script.py -i <s> --model <s> --splitter <s> --min_samples_split <n> --max_depth <n> --min_samples_leaf <n>
+  ./tuning_param_script.py -i <s> --model <s> --weights <s> --n_neighbors <n> --algorithm <s> --leaf_size <n>
+  ./tuning_param_script.py -i <s> --model <s> --alpha <n> --neurons <n> --layers <n>
+  ./tuning_param_script.py -i <s> --model <s> --C <n> --epsilon <n> --gamma <n> --max_iter <n>
+  ./tuning_param_script.py -i <s> -p <s> --model <s> --predict  <s>
   ./tuning_param_script.py -h | --help
 
 Options:
   -i <s>                   Input file
+  -p <s>                   Parameters file
   --model <s>              Model to be selected
   --predict <s>            Predict and save results in the given directory
 
@@ -39,6 +41,7 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
+from pandas import read_csv
 
 
 def can_cast(s, caster=int):
@@ -55,12 +58,14 @@ def parse_docopt(doc):
     filename = opts['-i']
     modelname = opts['--model']
     predict = opts['--predict']
+    paramfilename = opts['-p']
 
     del opts['-h']
     del opts['--help']
     del opts['-i']
     del opts['--model']
     del opts['--predict']
+    del opts['-p']
 
     copy = opts.copy()
     for k, v in copy.items():
@@ -75,7 +80,7 @@ def parse_docopt(doc):
         elif can_cast(v, float):
             opts[k] = float(v)
 
-    return filename, modelname, predict, opts
+    return paramfilename, filename, modelname, predict, opts
 
 
 def MLPRegressorProxy(alpha, neurons, layers):
@@ -94,8 +99,15 @@ models = {
 
 
 if __name__ == '__main__':
-    filename, modelname, predict, opts = parse_docopt(__doc__)
+    paramfilename, filename, modelname, predict, opts = parse_docopt(__doc__)
     model = models[modelname]
+
+    if paramfilename is not None:
+        opts = dict(read_csv(paramfilename))
+        opts = {k: v[0] for k, v in opts.items()}
+
+    assert opts is not None
+
     model = model(**opts)
 
     n_cols, weeks, ts, xs = load_data(filename=filename)
