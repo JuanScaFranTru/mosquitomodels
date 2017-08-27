@@ -16,9 +16,6 @@ function run {
     # Output results in a csv
     program='library("irace"); load("results/'$model'.Rdata"); write.csv(getFinalElites(iraceResults, n = 0), file = "results/'$model'.csv"); q();'
     echo $program | R --no-save > /dev/null;
-
-    # Remove Rdata file
-    rm results/$model.Rdata
 }
 
 
