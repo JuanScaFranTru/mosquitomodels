@@ -1,12 +1,12 @@
 """Train a model
 
 Usage:
-  ./tuning_param_script.py -i <s> --model <s> --splitter <s> --min_samples_split <n> --max_depth <n> --min_samples_leaf <n>
-  ./tuning_param_script.py -i <s> --model <s> --weights <s> --n_neighbors <n> --algorithm <s> --leaf_size <n>
-  ./tuning_param_script.py -i <s> --model <s> --alpha <n> --neurons <n> --layers <n>
-  ./tuning_param_script.py -i <s> --model <s> --C <n> --epsilon <n> --gamma <n> --max_iter <n>
-  ./tuning_param_script.py -i <s> -p <s> --model <s> --predict  <s>
-  ./tuning_param_script.py -h | --help
+  ./nonlinear.py -i <s> --model <s> --splitter <s> --min_samples_split <n> --max_depth <n> --min_samples_leaf <n>
+  ./nonlinear.py -i <s> --model <s> --weights <s> --n_neighbors <n> --algorithm <s> --leaf_size <n>
+  ./nonlinear.py -i <s> --model <s> --alpha <n> --neurons <n> --layers <n>
+  ./nonlinear.py -i <s> --model <s> --C <n> --epsilon <n> --gamma <n> --max_iter <n>
+  ./nonlinear.py -i <s> -p <s> --model <s> --predict  <s>
+  ./nonlinear.py -h | --help
 
 Options:
   -i <s>                   Input file

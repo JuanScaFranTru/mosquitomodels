@@ -25,25 +25,9 @@ function run {
 if containsElement "$1" "${models[@]}"; then
    model=$1;
    run $model;
-elif [ "$1" = "all" ]; then
-    for model in "${models[@]}"; do
-        run $model;
-    done
-elif [ "$1" = "clean" ]; then
-    rm *.stdout *.stderr -f;
 else
-    # If the number of arguments is 0 or the argument is incorrect, show help message
-    echo -e "${bold}Please, specify a valid model as fisrt argument:";
-    echo -e "Models:"
-    for model in "${models[@]}"; do
-        echo -e "\t $model";
-    done
-    echo -e "";
-    echo -e "${bold}Or specify a valid command as first argument:";
-    echo -e "Commands:";
-    echo -e "\t all   \t -- Run all models sequentially";
-    echo -e "\t clean \t -- Delete all *.stderr and *.stdout files";
-
+    # If the number of arguments is 0 or the argument is incorrect, show error message
+    echo -e "No model was provided";
     # Exit with error
     exit 1;
 fi
