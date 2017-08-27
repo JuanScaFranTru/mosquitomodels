@@ -6,6 +6,16 @@ Usage:
 
 Options:
   --help                   show this screen
+
+Examples:
+  python controller.py clear                     # Delete the all *stderr and *stdout
+  python controller.py clean                     # Clean the data
+  python controller.py tune                      # Use the cleaned data to tune all models
+  python controller.py tune svr                  # Tune svr params using the cleaned data
+  python controller.py tune svr mlpr             # Tune svr and mlpr params using the cleaned data
+  python controller.py plot svr                  # Plot predictions using svr model using the selected parameters
+  python controller.py clean tune plot svr mlpr  # Clean, tune and plot svr and mlpr models
+  python controller.py clean tune plot linear    # Clean and plot linear model (linear cannot be tuned)
 """
 from docopt import docopt
 from os import listdir
@@ -42,13 +52,9 @@ def clear():
         remove_file(f)
 
 
-def print_usage():
-    print(__doc__)
-    print("Available models:")
-    print('{1}{0}'.format('\n  # '.join(ALLMODELS), '  # '))
-
-
 if __name__ == '__main__':
+    __doc__ += '\nAvailable models:\n'
+    __doc__ += '{1}{0}'.format('\n  # '.join(ALLMODELS), '  # ')
     opts = docopt(__doc__)
 
     if opts['clear']:
@@ -61,16 +67,16 @@ if __name__ == '__main__':
     models = list(set(opts['<model>']))  # Unique
 
     if not (plot or clean or tune or models):
-        print_usage()
+        print(__doc__)
 
     if not (set(models) <= set(ALLMODELS)):
-        print_usage()
+        print(__doc__)
         exit(1)
 
     if clean:
         clean_data()
     for model in models:
-        if tune:
+        if tune and model not in LINEARMODELS:
             tune_params(model)
         if plot:
             plot_results(model)
