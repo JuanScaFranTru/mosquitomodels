@@ -2,9 +2,10 @@
 
 Usage:
   ./controller.py clear
-  ./controller.py [clean] [tune] [plot] [<model> ...]
+  ./controller.py [clean] [tune] [plot --sp <n>] [<model> ...]
 
 Options:
+  --sp <n>                 splitting point
   --help                   show this screen
 
 Examples:
@@ -41,8 +42,8 @@ def tune_params(model):
     run(['./.tune_params.sh', model])
 
 
-def plot_results(model):
-    run(['./.plot_results.sh', model])
+def plot_results(model, sp):
+    run(['./.plot_results.sh', model, sp])
 
 
 def clear():
@@ -64,6 +65,7 @@ if __name__ == '__main__':
     tune = opts['tune']
     clean = opts['clean']
     plot = opts['plot']
+    sp = opts['--sp']
     models = list(set(opts['<model>']))  # Unique
 
     if not (plot or clean or tune or models):
@@ -79,4 +81,4 @@ if __name__ == '__main__':
         if tune and model not in LINEARMODELS:
             tune_params(model)
         if plot:
-            plot_results(model)
+            plot_results(model, sp)

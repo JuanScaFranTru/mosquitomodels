@@ -1,16 +1,18 @@
 """Train a model
 
 Usage:
-  ./nonlinear.py -i <s> --model <s> --splitter <s> --min_samples_split <n> --max_depth <n> --min_samples_leaf <n>
-  ./nonlinear.py -i <s> --model <s> --weights <s> --n_neighbors <n> --algorithm <s> --leaf_size <n>
-  ./nonlinear.py -i <s> --model <s> --alpha <n> --neurons <n> --layers <n>
-  ./nonlinear.py -i <s> --model <s> --C <n> --epsilon <n> --gamma <n> --max_iter <n>
-  ./nonlinear.py -i <s> -p <s> --model <s> --predict  <s>
-  ./nonlinear.py -h | --help
+  ./models.py -i <s> --model <s> --splitter <s> --min_samples_split <n> --max_depth <n> --min_samples_leaf <n>
+  ./models.py -i <s> --model <s> --weights <s> --n_neighbors <n> --algorithm <s> --leaf_size <n>
+  ./models.py -i <s> --model <s> --alpha <n> --neurons <n> --layers <n>
+  ./models.py -i <s> --model <s> --C <n> --epsilon <n> --gamma <n> --max_iter <n>
+  ./models.py -i <s> -p <s> --model <s> --predict  <s> --sp <n>
+  ./models.py -i <s> --model <s> --predict <s> --sp <n>
+  ./models.py -h | --help
 
 Options:
   -i <s>                   Input file
   -p <s>                   Parameters file
+  --sp <n>                 Spliting point
   --model <s>              Model to be selected
   --predict <s>            Predict and save results in the given directory
 
@@ -40,6 +42,9 @@ from utils import load_data, stats, print_stats, save_data, save_plot
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 from sklearn.neighbors import KNeighborsRegressor
+from sklearn.linear_model import RidgeCV
+from sklearn.linear_model import LinearRegression
+import numpy as np
 from sklearn.tree import DecisionTreeRegressor
 from pandas import read_csv
 
@@ -59,6 +64,9 @@ def parse_docopt(doc):
     modelname = opts['--model']
     predict = opts['--predict']
     paramfilename = opts['-p']
+    sp = None
+    if predict:
+        sp = float(opts['--sp'])
 
     del opts['-h']
     del opts['--help']
@@ -66,6 +74,7 @@ def parse_docopt(doc):
     del opts['--model']
     del opts['--predict']
     del opts['-p']
+    del opts['--sp']
 
     copy = opts.copy()
     for k, v in copy.items():
@@ -80,7 +89,7 @@ def parse_docopt(doc):
         elif can_cast(v, float):
             opts[k] = float(v)
 
-    return paramfilename, filename, modelname, predict, opts
+    return paramfilename, filename, modelname, predict, sp, opts
 
 
 def MLPRegressorProxy(alpha, neurons, layers):
@@ -90,16 +99,32 @@ def MLPRegressorProxy(alpha, neurons, layers):
                         alpha=alpha)
 
 
+class PositiveRidgeCV(RidgeCV):
+    def predict(self, X):
+        y = super(PositiveRidgeCV, self).predict(X)
+        y = np.maximum([0] * len(y), y)
+        return y
+
+
+class PositiveLinearRegression(LinearRegression):
+    def predict(self, X):
+        y = super(LinearRegression, self).predict(X)
+        y = np.maximum([0] * len(y), y)
+        return y
+
+
 models = {
     'dtr': DecisionTreeRegressor,
     'knnr': KNeighborsRegressor,
     'mlpr': MLPRegressorProxy,
     'svr': SVR,
+    'linear': PositiveLinearRegression,
+    'ridge': PositiveRidgeCV,
 }
 
 
 if __name__ == '__main__':
-    paramfilename, filename, modelname, predict, opts = parse_docopt(__doc__)
+    paramfilename, filename, modelname, predict, sp, opts = parse_docopt(__doc__)
     model = models[modelname]
 
     if paramfilename is not None:
@@ -116,12 +141,21 @@ if __name__ == '__main__':
     if predict is None:
         print(mean)
     else:
-        print_stats(scores, mean, std_dev)
+        print_stats(scores, mean, std_dev, 'Stats of ' + modelname)
 
         results_filename = predict + '/prediction-' + modelname + '.csv'
         results_plot_filename = predict + '/prediction-' + modelname + '.eps'
 
         model.fit(xs, ts)
+        ts_pred = model.predict(xs)
+        save_data(results_filename, weeks, ts, ts_pred)
+        save_plot(results_plot_filename, weeks, ts, ts_pred)
+
+        results_filename = predict + '/splited-prediction-' + modelname + '.csv'
+        results_plot_filename = predict + '/splited-prediction-' + modelname + '.eps'
+
+        sp = int(sp * len(ts))
+        model.fit(xs[:sp], ts[:sp])
         ts_pred = model.predict(xs)
         save_data(results_filename, weeks, ts, ts_pred)
         save_plot(results_plot_filename, weeks, ts, ts_pred)

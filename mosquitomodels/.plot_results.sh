@@ -11,18 +11,18 @@ containsElement () {
 
 function plotlinear {
     m=$1
-    python src/linear.py  -i data/tartagal.csv --model $m --predict results;
+    python src/models.py -i data/tartagal.csv --model $m --predict results --sp $2;
 }
 
 function plotnonlinear {
     m=$1
-    python src/nonlinear.py -i data/tartagal.csv -p results/$m.csv --model $m --predict results
+    python src/models.py -i data/tartagal.csv -p results/$m.csv --model $m --predict results --sp $2
 }
 
 if containsElement "$1" "${nlmodels[@]}"; then
-    plotnonlinear $1
+    plotnonlinear $1 $2
 elif containsElement "$1" "${lmodels[@]}"; then
-    plotlinear $1
+    plotlinear $1 $2
 fi
 
 # Trap ctrl-c and other exit signals
