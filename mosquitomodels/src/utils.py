@@ -76,6 +76,8 @@ def save_plot(filename, weeks, y_true, y_pred, xlabel='Weeks',
               ylabel='Normalized abundance', label_true='Ground truth',
               label_pred='Model', dpi=300):
 
+    plt.clf()
+
     plt.plot(weeks, y_true, color='c', linestyle='dashed', label=label_true)
     plt.plot(weeks, y_pred, color='g', linestyle='solid', label=label_pred)
 
