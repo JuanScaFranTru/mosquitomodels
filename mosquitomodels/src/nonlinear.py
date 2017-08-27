@@ -78,7 +78,7 @@ def parse_docopt(doc):
     return filename, modelname, predict, opts
 
 
-def MLPRegressorProxy(alpha=0.0001, neurons=1, layers=2):
+def MLPRegressorProxy(alpha, neurons, layers):
     hidden_layer_sizes = tuple([neurons] * layers)
     return MLPRegressor(hidden_layer_sizes=hidden_layer_sizes,
                         solver='lbfgs', activation='logistic',
