@@ -2,60 +2,23 @@
 
 Usage:
   ./data_cleaner.py -i <file> -o <file>
-  ./data_cleaner.py -i <file> -s <n> -o <file>
+  ./data_cleaner.py -i <file> -s <n> -p <n> -o <file>
 
 Options:
   -i <file>                Input data file
   -o <file>                Output data file or dir in the case of splitting
-  -s <file>                Split data to obtain instances for irace, give dir
+  -s <n>                   Number of instances to generate from data
+  -p <n>                   percentage of overlapping between the instances
 
   --help                   show this screen
 """
 from docopt import docopt
 from scipy.stats import zscore
 from pandas import read_csv
+from constants import USECOLS
 import numpy as np
 
-usecols = ['semana',
-           'fecha',
-           'abundancia',
-           'abundancia_norm',
-           'ndvirural',
-           'ndvirurallag1',
-           'ndviurban',
-           'ndviurbanlag1',
-           'ndwirural',
-           'ndwirurallag1',
-           'ndwiurban',
-           'ndwiurbanlag1',
-           'lstdrural',
-           'lstdrurallag3',
-           'lstdurban',
-           'lstdurbanlag3',
-           'lstnrural',
-           'lstnrurallag1',
-           'lstnurban',
-           'lstnurbanlag2',
-           'trmmrural',
-           'trmmrurallag3',
-           'dias_frio_rural5',
-           'grados_frio_rural5',
-           'dias_frio_rural10',
-           'grados_frio_rural10', ]
-
-usecols = ['semana',
-           'abundancia_norm',
-           'ndvirurallag1',
-           'ndwirurallag1',
-           'lstdrurallag3',
-           'lstnrurallag1',
-           'trmmrurallag3',
-           'dias_frio_rural10',
-           'grados_frio_rural10', ]
-
-usecols = usecols[:-2]  # Ignore last two
-
-usecols_string = ",".join(usecols)
+USECOLS_STRING = ",".join(USECOLS)
 
 
 def overlap(a, b, p):
@@ -80,7 +43,7 @@ if __name__ == '__main__':
     infilename = opts['-i']
     outfilename = opts['-o']
 
-    df = read_csv(infilename, sep=',', usecols=usecols)
+    df = read_csv(infilename, sep=',', usecols=USECOLS)
     df = df.dropna()
 
     result = df.apply(zscore)
@@ -91,11 +54,13 @@ if __name__ == '__main__':
     if opts['-s'] is None:
         result.to_csv(outfilename, sep=',', index=False)
     else:
-        split = int(opts['-s'])
+        nsplit = int(opts['-s'])
+        p = float(opts['-p'])
 
-        results = splitter(result, split)
+        results = splitter(result, nsplit, p)
 
+        infilename_no_path = infilename.split('/')[-1].split('.')[0]
         for i, r in enumerate(results):
-            out = outfilename + str(i) + '.csv'
+            out = outfilename + infilename_no_path + str(i) + '.csv'
             fmt = ",".join(["%s"] * df.shape[1])
-            np.savetxt(out, r, fmt=fmt, delimiter=',', header=usecols_string)
+            np.savetxt(out, r, fmt=fmt, delimiter=',', header=USECOLS_STRING)

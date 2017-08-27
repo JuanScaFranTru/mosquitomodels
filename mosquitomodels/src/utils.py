@@ -37,7 +37,7 @@ def save_data(filename, weeks, y_true, y_pred):
     np.savetxt(filename, X, delimiter=',')
 
 
-def load_data(filename='data/all_data.csv'):
+def load_data(filename='data/all.csv'):
     """Load the training data set."""
 
     data = np.loadtxt(filename, delimiter=',', skiprows=1)
@@ -85,3 +85,9 @@ def save_plot(filename, weeks, y_true, y_pred, xlabel='Weeks',
     plt.legend()
 
     plt.savefig(filename, format='eps', dpi=dpi)
+
+
+def get_filename_from_path(path):
+    """Given a path, return the name of the file with no extension."""
+    name = path.split('/')[-1].split('.')[0]
+    return name.capitalize()
