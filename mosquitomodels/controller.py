@@ -17,6 +17,8 @@ from glob import glob
 
 PARAMETERS = 'parameters'
 LINEARMODELS = ['linear', 'ridge']
+ALLMODELS = [f for f in listdir(PARAMETERS) if isfile(join(PARAMETERS, f))]
+ALLMODELS += LINEARMODELS
 
 
 def clean_data():
@@ -40,6 +42,12 @@ def clear():
         remove_file(f)
 
 
+def print_usage():
+    print(__doc__)
+    print("Available models:")
+    print('{1}{0}'.format('\n  # '.join(ALLMODELS), '  # '))
+
+
 if __name__ == '__main__':
     opts = docopt(__doc__)
 
@@ -51,13 +59,12 @@ if __name__ == '__main__':
     clean = opts['clean']
     plot = opts['plot']
     models = list(set(opts['<model>']))  # Unique
-    allmodels = [f for f in listdir(PARAMETERS) if isfile(join(PARAMETERS, f))]
-    allmodels += LINEARMODELS
 
-    if not (set(models) <= set(allmodels)):
-        print(__doc__)
-        print("Available models:")
-        print('{1}{0}'.format('\n  # '.join(allmodels), '  # '))
+    if not (plot or clean or tune or models):
+        print_usage()
+
+    if not (set(models) <= set(ALLMODELS)):
+        print_usage()
         exit(1)
 
     if clean:
