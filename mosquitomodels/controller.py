@@ -1,11 +1,10 @@
 """Run actions using this script.
 
 Usage:
+  ./controller.py clear
   ./controller.py [clean] [tune] [plot] [<model> ...]
-  ./controller.py --clear
 
 Options:
-  --clear                  remove stdout and stderr files
   --help                   show this screen
 """
 from docopt import docopt
@@ -44,7 +43,7 @@ def clear():
 if __name__ == '__main__':
     opts = docopt(__doc__)
 
-    if opts['--clear']:
+    if opts['clear']:
         clear()
         exit()
 
