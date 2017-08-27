@@ -113,3 +113,4 @@ ENV/
 
 # Data
 *.csv
+*.eps
