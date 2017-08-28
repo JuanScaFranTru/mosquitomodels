@@ -26,8 +26,8 @@
 ##    condition is satisfied, FALSE otherwise.
 
 # 1:             2:            3:             4:               5:
-model           "--model "        c              (svr)
-C               "--C "            r              (0.0, 10.0)
-epsilon         "--epsilon "      r              (1e-09, 1)
-gamma           "--gamma "        r              (0.0, 1)
-max_iter        "--max_iter "     i              (-1, 3000)
+model           "model "        c              (svr)
+C               "C "            r              (0.0, 10.0)
+epsilon         "epsilon "      r              (1e-09, 1)
+gamma           "gamma "        r              (0.0, 1)
+max_iter        "max_iter "     i              (-1, 3000)

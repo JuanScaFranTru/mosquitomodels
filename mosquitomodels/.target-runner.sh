@@ -16,7 +16,7 @@
 # This script should print one numerical value: the cost that must be minimized.
 # Exit with 0 if no error, with 1 in case of error
 ###############################################################################
-EXE="src/models.py"
+EXE="src/script.py"
 PYTHON="python"
 FIXED_PARAMS=""
 

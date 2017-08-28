@@ -26,8 +26,8 @@
 ##    condition is satisfied, FALSE otherwise.
 
 # 1:                      2:              3:             4:               5:
-model                "--model "             c              (dtr)
-splitter             "--splitter "          c              (best, random)
-min_samples_split    "--min_samples_split "  r             (0.0, 1.0)
-max_depth            "--max_depth "         i              (1, 500)
-min_samples_leaf     "--min_samples_leaf "   i              (1, 2000)
+model                "model "             c              (dtr)
+splitter             "splitter "          c              (best, random)
+min_samples_split    "min_samples_split "  r             (0.0, 1.0)
+max_depth            "max_depth "         i              (1, 500)
+min_samples_leaf     "min_samples_leaf "   i              (1, 2000)
