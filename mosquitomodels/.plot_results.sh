@@ -11,12 +11,12 @@ containsElement () {
 
 function plotlinear {
     m=$1
-    python src/models.py -i data/tartagal.csv --model $m --predict results --sp $2;
+    python src/script.py -i data/tartagal.csv --model $m --predict results --sp $2;
 }
 
 function plotnonlinear {
     m=$1
-    python src/models.py -i data/tartagal.csv -p results/$m.csv --model $m --predict results --sp $2
+    python src/script.py -i data/tartagal.csv -p results/$m.csv --model $m --predict results --sp $2
 }
 
 if containsElement "$1" "${nlmodels[@]}"; then

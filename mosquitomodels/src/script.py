@@ -1,9 +1,9 @@
 """Train a model
 
 Usage:
-  ./script.py -i <s> model <s> param <n> ...
-  ./script.py -i <s> model <s> --predict <s> --sp <n> -p <s>
-  ./script.py -i <s> model <s> --predict <s> --sp <n>
+  ./script.py -i <s> --model <s> param <n> ...
+  ./script.py -i <s> --model <s> --predict <s> --sp <n> -p <s>
+  ./script.py -i <s> --model <s> --predict <s> --sp <n>
   ./script.py -h | --help
 
 """
@@ -26,7 +26,7 @@ if __name__ == '__main__':
     for i in range(0, len(argv) - 1, 2):
         opts[argv[i]] = argv[i+1]
 
-    fixed_opts = ['--predict', '-i', '--sp', '-p', 'model']
+    fixed_opts = ['--predict', '-i', '--sp', '-p', '--model']
     params = {k: v for k, v in opts.items() if k not in fixed_opts}
     opts = {k: v for k, v in opts.items() if k in fixed_opts}
 
@@ -36,11 +36,11 @@ if __name__ == '__main__':
         elif can_cast(v, float):
             params[k] = float(v)
 
-    model = MODELS[opts['model']]
+    model = MODELS[opts['--model']]
 
     if '-p' in opts:
-        opts = dict(read_csv(opts['-p']))
-        opts = {k: v[0] for k, v in opts.items()}
+        params = dict(read_csv(opts['-p']))
+        params = {k: v[0] for k, v in params.items()}
 
     model = model(**params)
 
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     if '--predict' not in opts:
         print(mean)
     else:
-        modelname = opts['model']
+        modelname = opts['--model']
         predict = opts['--predict']
 
         print_stats(scores, mean, std_dev, 'Stats of ' + modelname)
