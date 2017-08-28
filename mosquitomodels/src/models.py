@@ -19,7 +19,7 @@ from sklearn.tree import DecisionTreeRegressor
 def make_custom_model(model):
     class CustomModel(model):
         def predict(self, X):
-            y = super(model, self).predict(X)
+            y = super(CustomModel, self).predict(X)
             y = np.maximum([0] * len(y), y)
             return y
     return CustomModel
