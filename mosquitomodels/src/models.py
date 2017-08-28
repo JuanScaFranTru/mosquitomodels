@@ -11,8 +11,6 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.linear_model import RidgeCV
-from sklearn.decomposition import PCA
-from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LinearRegression
 import numpy as np
 from sklearn.tree import DecisionTreeRegressor
@@ -29,14 +27,7 @@ def make_custom_model(model):
 
 def add_pca_to_model(model):
     class PCAModel(model):
-        def __init__(self, n_components=None, **args):
-            self.pca = PCA(n_components=n_components)
-            super(PCAModel, self).__init__(**args)
-
-        def predict(self, X):
-            X = self.pca.fit(X).transform(X)
-            y = super(PCAModel, self).predict(X)
-            return y
+        pca = True
     return PCAModel
 
 

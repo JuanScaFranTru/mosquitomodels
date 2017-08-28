@@ -8,6 +8,7 @@ Usage:
 
 """
 from utils import load_data, stats, print_stats, save_data, save_plot
+from sklearn.decomposition import PCA
 from models import MODELS
 from pandas import read_csv
 import sys
@@ -42,9 +43,18 @@ if __name__ == '__main__':
         params = dict(read_csv(opts['-p']))
         params = {k: v[0] for k, v in params.items()}
 
-    model = model(**params)
-
     n_cols, weeks, y, X = load_data(filename=opts['-i'])
+
+    try:
+        model.pca
+    except AttributeError:
+        pass
+    else:
+        pca = PCA(n_components=params['n_components'])
+        del params['n_components']
+        X = pca.fit(X).transform(X)
+
+    model = model(**params)
     scores, mean, std_dev = stats(X, y, model)
 
     if '--predict' not in opts:
