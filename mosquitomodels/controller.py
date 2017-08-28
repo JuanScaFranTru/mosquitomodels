@@ -2,6 +2,7 @@
 
 Usage:
   ./controller.py clear
+  ./controller.py [clean] [tune] [plot --sp <n>] all
   ./controller.py [clean] [tune] [plot --sp <n>] [<model> ...]
 
 Options:
@@ -66,8 +67,13 @@ if __name__ == '__main__':
     tune = opts['tune']
     clean = opts['clean']
     plot = opts['plot']
+    all_models = opts['all']
     sp = opts['--sp']
-    models = list(set(opts['<model>']))  # Unique
+
+    if all_models:
+        models = ALLMODELS
+    else:
+        models = list(set(opts['<model>']))  # Unique
 
     if not (plot or clean or tune or models):
         print(__doc__)
