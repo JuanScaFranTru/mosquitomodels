@@ -26,7 +26,8 @@
 ##    condition is satisfied, FALSE otherwise.
 
 # 1:                      2:              3:             4:               5:
-model                "--model "            c             (dtr)
+model                "--model "            c             (pcadtr)
+n_components         "n_components "       i             (2, 7)
 splitter             "splitter "           c             (best, random)
 max_depth            "max_depth "          i             (1, 5)
 min_samples_leaf     "min_samples_leaf "   i             (3, 7)

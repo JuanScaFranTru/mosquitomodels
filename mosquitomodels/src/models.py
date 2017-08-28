@@ -46,6 +46,7 @@ MODELS = {
     'mlpr': MLPRegressorProxy,
     'svr': make_custom_model(SVR),
     'pcaknnr': add_pca_to_model(make_custom_model(KNeighborsRegressor)),
+    'pcadtr': add_pca_to_model(make_custom_model(DecisionTreeRegressor)),
     'linear': make_custom_model(LinearRegression),
     "ridge": make_custom_model(RidgeCV),
 }
