@@ -26,10 +26,10 @@
 ##    condition is satisfied, FALSE otherwise.
 
 # 1:             2:                        3:           4:                       5:
-model            "--model "                c            (knnr)
-n_components     "pca__n_components "      i            (3, 10)
-weights          "knnr__weights "          c            (uniform, distance)
-n_neighbors      "knnr__n_neighbors "      i            (2, 10)
-algorithm        "knnr__algorithm "        c            (brute)
-metric           "knnr__metric "           c            (chebyshev, minkowski)
-p                "knnr__p "                i            (1, 10)                  | metric == "minkowski"
+model            "--model "                c            (pcaknnr)
+n_components     "n_components "           i            (3, 10)
+weights          "weights "                c            (uniform, distance)
+n_neighbors      "n_neighbors "            i            (2, 10)
+algorithm        "algorithm "              c            (brute)
+metric           "metric "                 c            (chebyshev, minkowski)
+p                "p "                      i            (1, 10)                  | metric == "minkowski"
