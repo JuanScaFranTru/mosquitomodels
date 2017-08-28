@@ -11,6 +11,8 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.linear_model import RidgeCV
+from sklearn.decomposition import PCA
+from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LinearRegression
 import numpy as np
 from sklearn.tree import DecisionTreeRegressor
@@ -23,6 +25,19 @@ def make_custom_model(model):
             y = np.maximum([0] * len(y), y)
             return y
     return CustomModel
+
+
+def add_pca_to_model(model):
+    class PCAModel(model):
+        def __init__(self, n_components=None, **args):
+            self.pca = PCA(n_components=n_components)
+            super(PCAModel, self).__init__(**args)
+
+        def predict(self, X):
+            X = self.pca.fit(X).transform(X)
+            y = super(PCAModel, self).predict(X)
+            return y
+    return PCAModel
 
 
 mlpr = make_custom_model(MLPRegressor)
@@ -39,6 +54,7 @@ MODELS = {
     'knnr': make_custom_model(KNeighborsRegressor),
     'mlpr': MLPRegressorProxy,
     'svr': make_custom_model(SVR),
+    'pcaknnr': add_pca_to_model(make_custom_model(KNeighborsRegressor)),
     'linear': make_custom_model(LinearRegression),
     "ridge": make_custom_model(RidgeCV),
 }
