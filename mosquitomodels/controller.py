@@ -85,6 +85,7 @@ if __name__ == '__main__':
     if clean:
         clean_data()
     for model in models:
+        print("MODEL:", model)
         if tune and model not in LINEARMODELS:
             tune_params(model)
         if plot:
